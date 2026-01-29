@@ -76,14 +76,14 @@ for email in tqdm(emails):
         origin_code, origin_name = resolve_port(data.get("origin_port_name"))
         dest_code, dest_name = resolve_port(data.get("destination_port_name"))
 
-        # 🔥 STRONG PRODUCT LINE LOGIC
+        #  STRONG PRODUCT LINE LOGIC
         product_line = None
         if origin_code and origin_code.startswith("IN") and dest_code:
             product_line = "pl_sea_export_lcl"
         elif dest_code and dest_code.startswith("IN") and origin_code:
             product_line = "pl_sea_import_lcl"
 
-        # 🔥 DANGEROUS GOODS OVERRIDE
+        #  DANGEROUS GOODS OVERRIDE
         text = f"{email['subject']} {email['body']}".lower()
         if any(x in text for x in ["non-dg", "non hazardous", "not dangerous"]):
             is_dg = False
@@ -109,10 +109,10 @@ for email in tqdm(emails):
 
     except Exception as e:
         msg = str(e)
-        print("🚨 LLM ERROR:", msg)
+        print(" LLM ERROR:", msg)
 
         if "429" in msg or "rate limit" in msg.lower():
-            print("🚨 Token limit reached. Stop run.")
+            print(" Token limit reached. Stop run.")
             break
 
         results.append({
@@ -132,4 +132,4 @@ for email in tqdm(emails):
 with open("output.json", "w", encoding="utf-8") as f:
     json.dump(results, f, indent=2)
 
-print(f"✅ output.json generated ({len(results)} records)")
+print(f" output.json generated ({len(results)} records)")
